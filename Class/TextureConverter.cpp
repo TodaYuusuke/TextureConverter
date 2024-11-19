@@ -15,16 +15,18 @@ void TextureConverter::LoadWICTextureFromFile(const std::string& filePath) {
 }
 
 std::wstring TextureConverter::ConvertMultiByteStringToWideString(const std::string& mString) {
-	if (mString.empty()) {
-		return std::wstring();
-	}
+	// 文字列が空なら終了
+	if (mString.empty()) { return std::wstring(); }
 
-	auto sizeNeeded = MultiByteToWideChar(CP_UTF8, 0, reinterpret_cast<const char*>(&mString[0]), static_cast<int>(mString.size()), NULL, 0);
-	if (sizeNeeded == 0) {
-		return std::wstring();
-	}
-	std::wstring result(sizeNeeded, 0);
-	MultiByteToWideChar(CP_UTF8, 0, reinterpret_cast<const char*>(&mString[0]), static_cast<int>(mString.size()), &result[0], sizeNeeded);
+	// ワイド文字列に変換した際の文字数を計算
+	auto sizeNeeded = MultiByteToWideChar(CP_ACP, 0, mString.c_str(), -1, nullptr, 0);
+	// 文字列の長さが0ら終了
+	if (sizeNeeded == 0) { return std::wstring(); }
+	
+	// 結果を生成
+	std::wstring result;
+	result.resize(sizeNeeded);
+	MultiByteToWideChar(CP_ACP, 0, mString.c_str(), -1, &result[0], sizeNeeded);
 
 	return result;
 }
