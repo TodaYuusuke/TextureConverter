@@ -18,6 +18,11 @@ public: // ** メンバ関数 ** //
 
 private: // ** メンバ変数 ** //
 
+	// 画像の情報
+	DirectX::TexMetadata metadata_;
+	// 画像イメージのコンテナ
+	DirectX::ScratchImage scratchImage_;
+
 
 private: // ** プライベートなメンバ関数 ** //
 
